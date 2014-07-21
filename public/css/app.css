@@ -1,0 +1,23 @@
+.status-chart-key {
+  margin-left: 10px;
+  margin-bottom: 15px;
+  overflow:hidden;
+}
+.status-chart-key ul li {
+  line-height: 16px;
+}
+.status-chart-key ul li .status-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+}
+.status-chart-key ul li .status-color.failure {
+  background-color: #ee5f5b;
+}
+.status-chart-key ul li .status-color.unstable {
+  background-color: #f89406;
+}
+.status-chart-key ul li .status-color.success {
+  background-color: #5bc0de;
+}

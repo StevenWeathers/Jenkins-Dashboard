@@ -1,0 +1,45 @@
+doctype
+html(ng-app="dashboardApp")
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title Jenkins Dashboard
+    link(rel='stylesheet', href='/libs/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/bootstrap-theme.min.css')
+    link(rel='stylesheet', href='/css/app.css')
+
+    script(src='/socket.io/socket.io.js')
+    script(src='/libs/jquery/dist/jquery.min.js')
+    script(src='/libs/bootstrap/dist/js/bootstrap.min.js')
+    script(src='/libs/angular/angular.min.js')
+    script(src='/libs/angular-socket-io/socket.min.js')
+    script(src='/libs/angular-route/angular-route.min.js')
+    script(src='/libs/chartjs/Chart.min.js')
+    script(src='/libs/angles/angles.js')
+    script(src='/libs/moment/min/moment.min.js')
+    script(src='/js/controllers.js')
+    script(src='/js/services.js')
+  body(ng-controller="DashboardController")
+    .navbar.navbar-default(role='navigation')
+      .container
+        .navbar-header
+          a.navbar-brand(href='/')
+            | Jenkins Dashboard
+        .pull-right(style='color: white; font-size: 24px; line-height: 2.5;')
+          span#currentTime(style='color: white; font-size: 24px; line-height: 2.5; margin-right: 10px;')
+            | {{currentTime}}
+    .container(ng-view)
+    #consoleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-dialog.modal-lg
+            .modal-content
+              .modal-header
+                button.close(type='button', data-dismiss='modal')
+                  span(aria-hidden='true') ×
+                  span.sr-only Close
+                h4#myModalLabel.modal-title Console Output
+              .modal-body
+                | ...
+              .modal-footer
+                button.btn.btn-default(type='button', data-dismiss='modal') Close
+    script(src='/js/app.js')

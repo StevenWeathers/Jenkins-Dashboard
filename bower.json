@@ -1,0 +1,26 @@
+{
+  "name": "jenkins-dashboard",
+  "main": "index.js",
+  "version": "0.0.1",
+  "authors": [
+    "Steven Weathers <steven.weathers@softwr.io>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-socket-io": "~0.6.0",
+    "angular-route": "~1.2.19",
+    "bootstrap": "~3.2.0",
+    "chartjs": "~0.2.0",
+    "jquery": "~2.1.1",
+    "moment": "~2.7.0"
+  }
+}

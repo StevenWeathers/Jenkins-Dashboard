@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-md-6" ng-repeat="(jenkinsBoxName, jenkinsBoxJobs) in jenkinsJobs">
+    <div class="panel panel-default">
+      <div data-toggle="collapse" data-target="#{{jenkinsBoxName}}BuildsPanel" class="panel-heading">
+        <h3 class="panel-title">{{jenkinsBoxName}} Jenkins Builds</h3>
+      </div>
+      <div id="{{jenkinsBoxName}}BuildsPanel" class="panel-body collapse in">
+        <ul class="nav nav-pills pull-right">
+          <li class="dropdown"><a role="button" data-toggle="dropdown">Views<span class="caret"></span></a>
+          <ul id="{{jenkinsBoxName}}ViewsMenu" class="dropdown-menu">
+            <li ng-repeat="view in jenkinsViews[jenkinsBoxName]"><a href="{{view.dashboardUrl}}">{{view.name}}</a></li>
+          </ul>
+          </li>
+        </ul>
+        <canvas piechart options="jenkinsChartOptions" data="[{'value': jenkinsBoxJobs['All'].status.failed,color:'#ee5f5b'},{'value' : jenkinsBoxJobs['All'].status.unstable,color : '#f89406'},{'value' : jenkinsBoxJobs['All'].status.success,color : '#5bc0de'}]" width="200" height="200"></canvas>
+        <div id="jenkins{{jenkinsBoxName}}BuildStatus-key" class="status-chart-key">
+          <ul class="list-unstyled">
+            <li class="col-md-4">
+            <div class="status-color success">
+              &nbsp;
+            </div>
+            Success ({{jenkinsBoxJobs["All"].status.success}})</li>
+            <li class="col-md-4">
+            <div class="status-color unstable">
+              &nbsp;
+            </div>
+            Unstable ({{jenkinsBoxJobs["All"].status.unstable}})</li>
+            <li class="col-md-4">
+            <div class="status-color failure">
+              &nbsp;
+            </div>
+            Failure ({{jenkinsBoxJobs["All"].status.failed}})</li>
+          </ul>
+        </div>
+        <h4 data-toggle="collapse" data-target="#jenkins{{jenkinsBoxName}}Builds"><span>+</span>Active Builds ({{jenkinsBoxJobs["All"].status.active}})</h4>
+        <ul id="jenkins{{jenkinsBoxName}}Builds" class="list-unstyled collapse in">
+          <li ng-repeat="job in jenkinsBoxJobs['All'].active">{{job.name}} [&#35;{{job.lastBuild.number}}]
+          <div class="progress progress-striped active">
+            <div ng-show="job.lastBuild.executor.progress &amp;&amp; job.lastBuild.executor.progress &gt; 0">
+              <div ng-show="job.color.indexOf('red') &gt; -1" role="progressbar" aria-valuenow="{{job.lastBuild.executor.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{job.lastBuild.executor.progress}}%;" class="progress-bar progress-bar-danger">
+                {{job.lastBuild.executor.progress}}%
+              </div>
+              <div ng-show="job.color.indexOf('yellow') &gt; -1" role="progressbar" aria-valuenow="{{job.lastBuild.executor.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{job.lastBuild.executor.progress}}%;" class="progress-bar progress-bar-warning">
+                {{job.lastBuild.executor.progress}}%
+              </div>
+              <div ng-show="job.color.indexOf('red') === -1 &amp;&amp; job.color.indexOf('yellow') === -1" role="progressbar" aria-valuenow="{{job.lastBuild.executor.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{job.lastBuild.executor.progress}}%;" class="progress-bar progress-bar-info">
+                {{job.lastBuild.executor.progress}}%
+              </div>
+            </div>
+            <div ng-show="!job.lastBuild.executor.progress || job.lastBuild.executor.progress &lt; 1">
+              <div role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;" class="progress-bar">
+                Building
+              </div>
+            </div>
+          </div>
+          </li>
+          <li ng-show="!jenkinsBoxJobs['All'].active.length" style="text-align:center;">No active builds</li>
+        </ul>
+        <h4 data-toggle="collapse" data-target="#jenkinsUnstable{{jenkinsBoxName}}Builds"><span>+</span>Unstable Builds ({{jenkinsBoxJobs["All"].status.unstable}})</h4>
+        <ul id="jenkinsUnstable{{jenkinsBoxName}}Builds" class="list-group collapse">
+          <li style="overflow:hidden;" ng-repeat="job in jenkinsBoxJobs['All'].unstable" class="list-group-item list-group-item-warning">
+            <div style="float:left; width 80%;">
+              <a href="{{job.lastBuild.url}}">{{job.name}} [&#35;{{job.lastBuild.number}}] - {{job.lastBuild.timestamp}}</a>
+            </div>
+            <div style="float:right; width:18%">
+              <a data-lastbuild-name="{{job.name}}" data-lastbuild-url="{{job.lastBuild.url}}" class="pull-right get-console-output">Console</a>
+            </div>
+          </li>
+          <li ng-show="!jenkinsBoxJobs['All'].unstable.length" style="text-align:center;" class="list-group-item">No unstable builds</li>
+        </ul>
+        <h4 data-toggle="collapse" data-target="#jenkinsFailed{{jenkinsBoxName}}Builds"><span>+</span>Failed Builds ({{jenkinsBoxJobs["All"].status.failed}})</h4>
+        <ul id="jenkinsFailed{{jenkinsBoxName}}Builds" class="list-group collapse">
+          <li style="overflow:hidden;" ng-repeat="job in jenkinsBoxJobs['All'].failed" class="list-group-item list-group-item-danger">
+          <div style="float:left; width 80%;">
+            <a href="{{job.lastBuild.url}}">{{job.name}} [&#35;{{job.lastBuild.number}}] - {{job.lastBuild.timestamp}}</a>
+          </div>
+          <div style="float:right; width:18%">
+            <a data-lastbuild-name="{{job.name}}" data-lastbuild-url="{{job.lastBuild.url}}" class="pull-right get-console-output">Console</a>
+          </div>
+          </li>
+          <li ng-show="!jenkinsBoxJobs['All'].failed.length" style="text-align:center;" class="list-group-item">No failed builds</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
